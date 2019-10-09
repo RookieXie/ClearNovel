@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LoginLayoutView.cshtml";
+    var returnUrl = ViewBag.ReturnUrl;
+}
+
+<div class="text-center">
+    <div class="text-info">  用户名：<input type="text" /></div>
+  
+    <div  class="text-info">密码：<input type="password" /></div>
+    <div  class="text-info"><button onclick="login()">登录</button></div>
+</div>
+<script>
+    var login=function(){
+        $.post("/login/login",{userName:"admin",password:"123456"},function(res){
+            if (res) {
+                window.location.href = '@returnUrl';
+            } else {
+                alert("登录失败")
+            }
+        })
+    }
+</script>
+

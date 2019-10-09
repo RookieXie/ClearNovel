@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "首页";
+    SearchResult searchResult = ViewBag.SearchResult;
+    string searchName = ViewBag.SearchName;
+}
+
+    <div class="text-center">
+        <div class="text-info">
+            <input type="text" id="searchName" value="@searchName"/> <button onclick="search()">搜索</button>
+        </div>
+        @if (searchResult != null && searchResult.Contents != null && searchResult.Contents.Count > 0)
+        {
+            <h3 class="display-8">@searchResult.Caption</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>最新章节</th>
+                        <th>作者</th>
+                        <th>字数</th>
+                        <th>更新时间</th>
+                        <th>状态</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var novel in searchResult.Contents)
+                    {
+                    <tr>
+                        <td>@novel.Title</td>
+                        <td>@novel.Newest</td>
+                        <td>@novel.Author</td>
+                        <td>@novel.WordSize</td>
+                        <td>@novel.UpdateTime</td>
+                        <td>@novel.Status</td>
+                        <td><button onclick="getCatalog('@novel.Title','@novel.Author')">阅读</button></td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h1 class="display-5">Welcome</h1>
+        }
+
+    </div>
+<script>
+    function search() {
+        window.location.href = "/home/index?searchName=" + $('#searchName').val();
+    }
+    function getCatalog(title, author) {
+        alert(title);
+        alert(author);
+    }
+</script>

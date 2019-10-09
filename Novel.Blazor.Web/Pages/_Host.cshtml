@@ -1,0 +1,33 @@
+﻿@page "/"
+@namespace Novel.Blazor.Web.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Novel.Blazor.Web</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <app>
+        @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
+    </app>
+
+    <script src="_framework/blazor.server.js"></script>
+    <script>
+        var backToTop = function () {
+            window.scrollTo(0,0)
+        }
+        var setUUID = function (uid) {
+             localStorage.setItem("novelUUID",uid);
+        }
+        var getUUID = function () {
+           return  localStorage.getItem("novelUUID");
+        }
+    </script>
+</body>
+</html>
