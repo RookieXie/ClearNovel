@@ -1,6 +1,43 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
+    List<Nomic> nomics = ViewBag.Nomics;
+    int pageIndex = ViewBag.PageIndex;
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>个人小说站.</p>
+@foreach (var item in nomics)
+{
+    <div class="border-dark">
+        <div>
+            <a onclick="readNomic('@item.Url')"><img class="img-fluid" src="@item.ImgUrl" /></a>
+        </div>
+        <div>
+            @item.Title <br />
+            @item.Description
+        </div>
+    </div>
+
+}
+@if (pageIndex == 1)
+{
+    <button onclick="nextpage('@pageIndex')">下一页</button>
+}
+else
+{
+    <button onclick="previouspage('@pageIndex')">上一页</button>
+    <button onclick="nextpage('@pageIndex')">下一页</button>
+}
+
+
+<script>
+    function readNomic(url) {
+        window.location.href = "/home/NomicCatalog?url=" + url;
+    }
+    function nextpage(pageIndex) {
+        var _pageIndex = Number(pageIndex) + 1;
+        window.location.href = "/home/Privacy?pageIndex=" + _pageIndex;
+    }
+    function previouspage(pageIndex) {
+        var _pageIndex = Number(pageIndex)- 1;
+        window.location.href = "/home/Privacy?pageIndex=" + _pageIndex;
+    }
+</script>

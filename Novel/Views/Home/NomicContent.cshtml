@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+    NomicContent nomicContent = ViewBag.NomicContent;
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in nomicContent.ImgUrls)
+        {
+            <tr>
+                <td><img src="@item" /></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <button onclick="previouspage('@nomicContent.PreviousPage')">上章</button><button onclick="catalogPage('@nomicContent.CatalogUrl')">目录</button><button onclick="nextpage('@nomicContent.NextPage')">下章</button>
+</div>
+
+<script>
+    function nextpage(url) {
+        window.location.href = "/home/NomicContent?url=" + url;
+    }
+    function previouspage(url) {
+        window.location.href = "/home/NomicContent?url=" + url;
+    }
+    function catalogPage(url) {
+        window.location.href = "/home/NomicCatalog?url=" + url;
+    }
+</script>

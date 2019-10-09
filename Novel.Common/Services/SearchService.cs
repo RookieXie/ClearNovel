@@ -166,5 +166,114 @@ namespace Novel.Common.Services
             chapterContent.NextUrl = next_url?.GetAttributeValue("href", "");
             return chapterContent;
         }
+        public async Task<List<Nomic>> Getcaomics(int pageIndex)
+        {
+            var url = $"http://weijiaoshou.cn/manhua/liebiao/hanguomanhua-{pageIndex}.html";
+            var client = httpClientFactory.CreateClient();
+            var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
+            Random random = new Random();
+            client.DefaultRequestHeaders.Add("User-Agent", userAgent[random.Next(0, userAgent.Length - 1)]);
+            var response = await client.GetAsync(url);
+            var str = await response.Content.ReadAsStringAsync();
+            return HandleNomic(str);
+             
+        }
+        /// <summary>
+        /// 解析目录
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public List<Nomic> HandleNomic(string html)
+        {
+            List<Nomic> list = new List<Nomic>();
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(html);
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='recommend']//a");
+            foreach (var htmlNode in htmlNodes)
+            {
+                Nomic nomic = new Nomic();
+                nomic.Url = htmlNode.GetAttributeValue("href", "");
+                var imgNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl men-l']//img");
+                nomic.ImgUrl = "http://weijiaoshou.cn"+imgNode.GetAttributeValue("src", "");
+                var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl men-r']//div[position()=1]");
+                var descriptionNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl men-r']//div[position()=2]");
+                nomic.Title = titleNode.InnerText;
+                nomic.Description = descriptionNode.InnerText;
+                list.Add(nomic);
+            }
+            return list;
+        }
+        public async Task<List<NomicCatalog>> GetcaomicCatalog(string url)
+        {
+             url = $"http://weijiaoshou.cn{url}";
+            var client = httpClientFactory.CreateClient();
+            var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
+            Random random = new Random();
+            client.DefaultRequestHeaders.Add("User-Agent", userAgent[random.Next(0, userAgent.Length - 1)]);
+            var response = await client.GetAsync(url);
+            var str = await response.Content.ReadAsStringAsync();
+            return HandleNomicCatalog(str);
+
+        }
+        /// <summary>
+        /// 解析目录
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public List<NomicCatalog> HandleNomicCatalog(string html)
+        {
+            List<NomicCatalog> list = new List<NomicCatalog>();
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(html);
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='list']//a");
+            foreach (var htmlNode in htmlNodes)
+            {
+                NomicCatalog nomic = new NomicCatalog();
+                nomic.Url = htmlNode.GetAttributeValue("href", "");               
+                var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl']");
+                nomic.Title = titleNode.InnerText;
+                list.Add(nomic);
+            }
+            return list;
+        }
+        public async Task<NomicContent> NomicContent(string url)
+        {
+            url = $"http://weijiaoshou.cn{url}";
+            var client = httpClientFactory.CreateClient();
+            var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
+            Random random = new Random();
+            client.DefaultRequestHeaders.Add("User-Agent", userAgent[random.Next(0, userAgent.Length - 1)]);
+            var response = await client.GetAsync(url);
+            var str = await response.Content.ReadAsStringAsync();
+            return HandleNomicContent(str);
+
+        }
+        /// <summary>
+        /// 解析目录
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public NomicContent HandleNomicContent(string html)
+        {
+            NomicContent nomicContent = new NomicContent();
+            List<string> list = new List<string>();
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(html);
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='detail']//p");
+            foreach (var htmlNode in htmlNodes)
+            {
+                var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//img");
+
+                list.Add("http://weijiaoshou.cn" + titleNode.GetAttributeValue("src", ""));
+            }
+            nomicContent.ImgUrls = list;
+            var previousNodes = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='turn']//a[position()=1]");
+            var nextNodes = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='turn']//a[position()=2]");
+            var catalogNodes = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='turn']//a[position()=3]");
+            nomicContent.PreviousPage = previousNodes.GetAttributeValue("href", "");
+            nomicContent.NextPage = nextNodes.GetAttributeValue("href", "");
+            nomicContent.CatalogUrl = catalogNodes.GetAttributeValue("href", "");
+            return nomicContent;
+        }
     }
 }

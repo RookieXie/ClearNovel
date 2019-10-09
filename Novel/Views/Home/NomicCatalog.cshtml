@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+    List<NomicCatalog> nomicCatalogs = ViewBag.NomicCatalogs;
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in nomicCatalogs)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td><button onclick="readNomic('@item.Url')">阅读</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    function readNomic(url) {
+        window.location.href = "/home/NomicContent?url=" + url;
+    }
+
+</script>
