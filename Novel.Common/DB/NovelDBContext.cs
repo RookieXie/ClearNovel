@@ -17,6 +17,10 @@ namespace Novel.Common.DB
         public DbSet<NovelBook> NovelBook { get; set; }
         public DbSet<NovelContent> NovelContent { get; set; }
 
+        public DbSet<NomicDB> Nomic { get; set; }
+        public DbSet<NomicCatalogDB> NomicCatalog { get; set; }
+        public DbSet<NomicContentDB> NomicContent { get; set; }
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

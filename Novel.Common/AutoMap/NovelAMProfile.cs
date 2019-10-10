@@ -14,6 +14,12 @@ namespace Novel.Common.AutoMap
         {
             CreateMap<SearchResultContent, NovelBook>();
             CreateMap<NovelBook, SearchResultContent>();
+
+            CreateMap<Nomic, NomicDB>();
+            CreateMap<NomicDB, Nomic>();
+
+            CreateMap<NomicCatalog, NomicCatalogDB>();
+            CreateMap<NomicCatalogDB, NomicCatalog>();
         }
     }
 }
