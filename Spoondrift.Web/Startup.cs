@@ -34,7 +34,9 @@ namespace Spoondrift.Web
             {
                 x.UseRedisStorage(Configuration.GetConnectionString("RedisConnection"), new Hangfire.Redis.RedisStorageOptions { Db = 1 });
                 x.UseColouredConsoleLogProvider();
+
             });
+            services.AddSingleton(option => new RedisCore(Configuration.GetConnectionString("RedisConnection"), Configuration.GetValue("RedisIndex", 1)));
             services.AddHangfireServer();
             services.AddDbContext<NovelDBContext>(options =>
             {
