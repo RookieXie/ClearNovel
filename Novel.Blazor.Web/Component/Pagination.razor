@@ -1,0 +1,81 @@
+﻿<h3>Pagination</h3>
+@foreach (int pageNum in pageNums)
+{
+
+    <button @onclick="()=>ClickPageNum(pageNum)" class="@(pageNum == current ? "btn-dark":"")">@pageNum</button>
+}
+@code {
+    /// <summary>
+    /// 当前页数
+    /// </summary>
+    [Parameter]
+    public int current { get; set; }
+    /// <summary>
+    /// 默认当前页数
+    /// </summary>
+    public int defaultCurrent = 1;
+    /// <summary>
+    /// 默认每页条数
+    /// </summary>
+    public int defaultPageSize = 10;
+    /// <summary>
+    /// 每页条数
+    /// </summary>
+    [Parameter]
+    public int pageSize { get; set; }
+    /// <summary>
+    /// 指定每页可以显示多少条
+    /// </summary>
+    [Parameter]
+    public List<int> pageSizeOptions { get; set; } = new List<int> { 10, 20, 30, 40 };
+    /// <summary>
+    /// 是否可以快速跳转至某页
+    /// </summary>
+    [Parameter]
+    public bool showQuickJumper { get; set; } = false;
+    /// <summary>
+    /// 是否可以改变 pageSize
+    /// </summary>
+    [Parameter]
+    public bool showSizeChanger { get; set; } = false;
+    /// <summary>
+    /// 数据总数
+    /// </summary>
+    [Parameter]
+    public int total { get; set; }
+    /// <summary>
+    /// 页码改变的回调，参数是改变后的页码及每页条数
+    /// </summary>
+
+    [Parameter]
+    public Action<int, int> onChange { get; set; }
+    /// <summary>
+    /// pageSize 变化的回调
+    /// </summary>
+    [Parameter]
+    public Action<int> onShowSizeChange { get; set; }
+    /// <summary>
+    /// 总页数
+    /// </summary>
+    public List<int> pageNums = new List<int>();
+    protected override void OnInitialized()
+    {
+        current = current == 0 ? defaultCurrent : current;
+        pageSize = pageSize == 0 ? defaultPageSize : pageSize;
+        int _pageNums = (total / pageSize) + 1;
+        pageNums = Enumerable.Range(1, _pageNums).ToList();
+    }
+    public void ClickPrePage()
+    {
+
+    }
+    public void ClickNextPage()
+    {
+
+    }
+    private void ClickPageNum(int pageIndex)
+    {
+        current = pageIndex;
+        onChange(current, pageSize);
+    }
+}

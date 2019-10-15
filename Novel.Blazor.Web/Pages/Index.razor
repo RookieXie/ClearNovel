@@ -3,3 +3,16 @@
 <h1>我的书架</h1>
 
 Welcome to your new app.
+<Pagination total="100" onChange="pageChange"></Pagination>
+<div>pageIdex:@pageIndex  pageSize:@pageSize</div>
+@code{
+    public int pageIndex=0;
+    public int pageSize=0;
+
+    public void pageChange(int _pageIndex,int _pageSize)
+    {
+        pageIndex = _pageIndex;
+        pageSize = _pageSize;
+        StateHasChanged();
+    }
+}
