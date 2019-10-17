@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novel.Common", "Novel.Commo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spoondrift.Web", "Spoondrift.Web\Spoondrift.Web.csproj", "{9CC62745-B3D5-47DB-B777-2363F75318C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Component", "Blazor.Component\Blazor.Component.csproj", "{75924D62-80A3-4121-BD71-FF5DA5B89107}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Component", "Blazor.Component\Blazor.Component.csproj", "{75924D62-80A3-4121-BD71-FF5DA5B89107}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -31,6 +31,8 @@ namespace Novel.Blazor.Web
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddSingleton<SearchService>();
+            services.AddSingleton<NovelService>();
+            
             services.AddHttpClient();
             services.AddRazorPages();
             services.AddServerSideBlazor();

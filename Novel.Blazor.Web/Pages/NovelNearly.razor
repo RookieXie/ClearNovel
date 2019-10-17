@@ -1,0 +1,23 @@
+﻿@page "/novelnearly"
+@using Novel.Common.Services
+@using Novel.Common.Models
+@inject NovelService NovelService
+<h3>最新更新列表</h3>
+@foreach (var item in updateNovels)
+{
+<div class="card-body">
+    <span class="card-columns">@item.Tag</span>
+    <span class="card-columns">@item.Title</span>
+    <span class="card-columns">@item.NearlyChapter</span>
+    <span class="card-columns">@item.Author</span>
+    <span class="card-columns">@item.UpdateTime</span>
+</div>
+}
+
+@code {
+    List<NearlyUpdateNovel> updateNovels = new List<NearlyUpdateNovel>();
+    protected override async Task OnInitializedAsync()
+    {
+        updateNovels = await NovelService.GetNearlyUpdateList();
+    }
+}

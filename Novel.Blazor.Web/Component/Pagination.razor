@@ -1,8 +1,9 @@
 ﻿<h3>Pagination</h3>
 @foreach (int pageNum in pageNums)
 {
-
+<div class="card-body">
     <button @onclick="()=>ClickPageNum(pageNum)" class="@(pageNum == current ? "btn-dark":"")">@pageNum</button>
+</div>
 }
 @code {
     /// <summary>
