@@ -1,19 +1,39 @@
-﻿@page "/novelnearly"
+﻿@page "/"
 @using Novel.Common.Services
 @using Novel.Common.Models
 @inject NovelService NovelService
-<h3>最新更新列表</h3>
-@foreach (var item in updateNovels)
-{
-<div class="card-body">
-    <span class="card-columns">@item.Tag</span>
-    <span class="card-columns">@item.Title</span>
-    <span class="card-columns">@item.NearlyChapter</span>
-    <span class="card-columns">@item.Author</span>
-    <span class="card-columns">@item.UpdateTime</span>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">最新更新</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" role="tab" aria-controls="nav-profile" aria-selected="false">玄幻</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">修真</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">都市</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">穿越</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">网游</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">科幻</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">言情</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">同人</a>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        @foreach (var item in updateNovels)
+        {
+            <div class="card   mb-3 border border-info rounded">
+                <div class="card-body">
+                    <span class="card-text">@item.Tag</span>
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.NearlyChapter</p>
+                    <p class="card-text">作者:@item.Author</p>
+                    <p class="card-text">更新时间:@item.UpdateTime</p>
+                    <a href="#" class="btn btn-outline-primary">加入书架</a> <a href="#" class="btn btn-outline-success ml-3">阅  读</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
+    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
 </div>
-}
-
 @code {
     List<NearlyUpdateNovel> updateNovels = new List<NearlyUpdateNovel>();
     protected override async Task OnInitializedAsync()

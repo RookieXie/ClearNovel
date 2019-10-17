@@ -30,6 +30,7 @@ namespace Novel.Blazor.Web
         public void ConfigureServices(IServiceCollection services)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            services.AddSingleton(option => new RedisCore(Configuration.GetConnectionString("RedisConnection"), Configuration.GetValue("RedisIndex", 1)));
             services.AddSingleton<SearchService>();
             services.AddSingleton<NovelService>();
             
@@ -55,7 +56,7 @@ namespace Novel.Blazor.Web
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
-            {
+            {                
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
