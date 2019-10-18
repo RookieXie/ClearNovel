@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novel", "Novel\Novel.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novel.Blazor.Web", "Novel.Blazor.Web\Novel.Blazor.Web.csproj", "{C75D3C8C-C638-40EE-8904-6C897EC37A39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novel.Angular", "Novel.Angular\Novel.Angular.csproj", "{8A5C20DF-265C-4D5D-AC98-210465A4AD94}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novel.Common", "Novel.Common\Novel.Common.csproj", "{EFC432EA-D146-4C81-9C32-A1322B21A2D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spoondrift.Web", "Spoondrift.Web\Spoondrift.Web.csproj", "{9CC62745-B3D5-47DB-B777-2363F75318C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Component", "Blazor.Component\Blazor.Component.csproj", "{75924D62-80A3-4121-BD71-FF5DA5B89107}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spoondrift.Blazor.Client", "Spoondrift.Blazor.Client\Spoondrift.Blazor.Client.csproj", "{D1392B46-D8DD-4A13-856B-36E273BAFE5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spoondrift.Mvc", "Spoondrift.Mvc\Spoondrift.Mvc.csproj", "{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +31,6 @@ Global
 		{C75D3C8C-C638-40EE-8904-6C897EC37A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C75D3C8C-C638-40EE-8904-6C897EC37A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C75D3C8C-C638-40EE-8904-6C897EC37A39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A5C20DF-265C-4D5D-AC98-210465A4AD94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A5C20DF-265C-4D5D-AC98-210465A4AD94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A5C20DF-265C-4D5D-AC98-210465A4AD94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A5C20DF-265C-4D5D-AC98-210465A4AD94}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFC432EA-D146-4C81-9C32-A1322B21A2D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFC432EA-D146-4C81-9C32-A1322B21A2D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFC432EA-D146-4C81-9C32-A1322B21A2D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +43,14 @@ Global
 		{75924D62-80A3-4121-BD71-FF5DA5B89107}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75924D62-80A3-4121-BD71-FF5DA5B89107}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75924D62-80A3-4121-BD71-FF5DA5B89107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1392B46-D8DD-4A13-856B-36E273BAFE5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1392B46-D8DD-4A13-856B-36E273BAFE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1392B46-D8DD-4A13-856B-36E273BAFE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1392B46-D8DD-4A13-856B-36E273BAFE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
