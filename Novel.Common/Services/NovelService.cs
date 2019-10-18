@@ -5,6 +5,7 @@ using Novel.Common.Models;
 using Novel.Common.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,23 @@ namespace Novel.Common.Services
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _redisCore = redisCore;
-        }        
+        }
+        private static readonly string[] Summaries = new[]
+        {
+            "最新更新", "玄幻", "修真", "都市", "穿越", "网游", "科幻", "言情", "同人"
+        };
+        private static readonly string[] SummariesUrl = new[]
+        {
+            "https://www.biquge5200.com", "https://www.biquge5200.cc/xuanhuanxiaoshuo/", "https://www.biquge5200.cc/xiuzhenxiaoshuo/", "https://www.biquge5200.cc/dushixiaoshuo/", "https://www.biquge5200.cc/chuanyuexiaoshuo/", "https://www.biquge5200.cc/wangyouxiaoshuo/", "https://www.biquge5200.cc/kehuanxiaoshuo/", "https://www.biquge5200.cc/yanqingxiaoshuo/", "https://www.biquge5200.cc/tongrenxiaoshuo/"
+        };
+        public Task<List<NovelTab>> GetTabs()
+        {
+            return Task.FromResult(Enumerable.Range(0,9).Select(index => new NovelTab
+            {
+                Order = index,
+                Title= Summaries[index]
+            }).ToList());
+        }
         public async Task<List<NearlyUpdateNovel>> GetNearlyUpdateList()
         {
             List<NearlyUpdateNovel> list = new List<NearlyUpdateNovel>();
@@ -102,19 +119,43 @@ namespace Novel.Common.Services
             string responseString = Encoding.GetEncoding("gbk").GetString(str);
             return responseString;
         }
-        public async Task<List<NearlyUpdateNovel>> GetTongRenList()
+        public async Task<List<NearlyUpdateNovel>> GetTongRenList(int order)
         {
-            var homeUrl = $"https://www.biquge5200.com";
-            string url1 = "https://www.biquge5200.cc/xuanhuanxiaoshuo/";
-            string url2 = "https://www.biquge5200.cc/xiuzhenxiaoshuo/";
-            string url3 = "https://www.biquge5200.cc/dushixiaoshuo/";
-            string url4 = "https://www.biquge5200.cc/chuanyuexiaoshuo/";
-            string url5 = "https://www.biquge5200.cc/wangyouxiaoshuo/";
-            string url6 = "https://www.biquge5200.cc/kehuanxiaoshuo/";
-            string url7 = "https://www.biquge5200.cc/yanqingxiaoshuo/";
-            string url8 = "https://www.biquge5200.cc/tongrenxiaoshuo/";
-            var homepage = await GetHtml(url1);
-            return HandleGoodLooking(homepage);
+            //var homeUrl = $"https://www.biquge5200.com";
+            //string url1 = "https://www.biquge5200.cc/xuanhuanxiaoshuo/";
+            //string url2 = "https://www.biquge5200.cc/xiuzhenxiaoshuo/";
+            //string url3 = "https://www.biquge5200.cc/dushixiaoshuo/";
+            //string url4 = "https://www.biquge5200.cc/chuanyuexiaoshuo/";
+            //string url5 = "https://www.biquge5200.cc/wangyouxiaoshuo/";
+            //string url6 = "https://www.biquge5200.cc/kehuanxiaoshuo/";
+            //string url7 = "https://www.biquge5200.cc/yanqingxiaoshuo/";
+            //string url8 = "https://www.biquge5200.cc/tongrenxiaoshuo/";
+            var url = SummariesUrl[order];
+            List<NearlyUpdateNovel> list = new List<NearlyUpdateNovel>();
+            var key = $"homepage_{Summaries[order]}";
+            var redis = _redisCore._redisDB;
+            list = redis.GetCache<List<NearlyUpdateNovel>>(key);
+            var backKey = $"homepage_{Summaries[order]}_back";
+            if (list == null)
+            {               
+                var homepage = await GetHtml(url);
+                list= HandleGoodLooking(homepage);
+                redis.SetCache(key, list, TimeSpan.MaxValue);
+                redis.SetCache(backKey, list, new TimeSpan(24, 0, 0));
+            }
+            Task task = new Task(async () => {
+                var _list = redis.GetCache<List<NearlyUpdateNovel>>(backKey);
+                if (_list == null)
+                {
+                    var homepage = await GetHtml(url);
+                    list = HandleGoodLooking(homepage);
+                    redis.SetCache(key, list, TimeSpan.MaxValue);
+                    redis.SetCache(backKey, list, new TimeSpan(24, 0, 0));
+                }
+            });
+            task.Start();
+            return list;
+           
         }
         /// <summary>
         /// 解析最新更新
@@ -126,7 +167,7 @@ namespace Novel.Common.Services
             List<NearlyUpdateNovel> nearlyUpdateNovels = new List<NearlyUpdateNovel>();
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(homepage);
-            var liNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='r']//div//ul//li");
+            var liNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='r']//ul//li");
             foreach (var liDoc in liNodes)
             {
                 NearlyUpdateNovel nearlyUpdateNovel = new NearlyUpdateNovel();

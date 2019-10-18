@@ -4,15 +4,10 @@
 @inject NovelService NovelService
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true">最新更新</a>
-        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" role="tab" aria-controls="nav-profile" aria-selected="false">玄幻</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">修真</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">都市</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">穿越</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">网游</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">科幻</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">言情</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false">同人</a>
+        @foreach (var tab in tabs)
+        {
+            <a class=@(selectNum==tab.Order?"nav-item nav-link active":"av-item nav-link") data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected=@(selectNum==tab.Order?"true":"false") @onclick=@(()=>  TabSelect(tab.Order))>@tab.Title</a>
+        }
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -36,8 +31,23 @@
 </div>
 @code {
     List<NearlyUpdateNovel> updateNovels = new List<NearlyUpdateNovel>();
+    List<NovelTab> tabs = new List<NovelTab>();
+    int selectNum = 0;
     protected override async Task OnInitializedAsync()
     {
+        tabs = await NovelService.GetTabs();
         updateNovels = await NovelService.GetNearlyUpdateList();
+    }
+    public async void TabSelect(int tabNum)
+    {
+        selectNum = tabNum;
+        if (tabNum > 0)
+        {
+            updateNovels = await NovelService.GetTongRenList(tabNum);
+        }
+        else
+        {
+            updateNovels = await NovelService.GetNearlyUpdateList();
+        }
     }
 }
