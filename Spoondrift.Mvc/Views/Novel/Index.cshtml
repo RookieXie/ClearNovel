@@ -5,12 +5,25 @@
     List<NovelTab> tabs = ViewBag.NovelTabs;
     int selectNum = ViewBag.SelectNum;
 }
-
+<style>
+    .list-group-item-active {
+        position: relative;
+        display: block;
+        padding: .75rem 1.25rem;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid rgba(0,0,0,.125);
+        z-index: 2;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+</style>
 
 <ul class="list-group list-group-horizontal-lg">
     @foreach (var tab in tabs)
     {
-        <li class=@(selectNum == tab.Order?"list-group-item active":"list-group-item")  >@tab.Title</li>
+        <li style="cursor:pointer" class=@(selectNum == tab.Order?"list-group-item-active":"list-group-item") onclick="TabClick(@tab.Order)">@tab.Title</li>
     }
 </ul>
 
@@ -31,4 +44,12 @@
         }
     </div>
 </div>
+<script>
+    function TabClick(order) {
+        window.location.href = "/Novel/index?order=" + order;
+    }
+     function AddBookShelf(order) {
+        window.location.href = "/Novel/index?order=" + order;
+    }
+</script>
 

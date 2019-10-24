@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,11 +28,20 @@ namespace Spoondrift.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<NovelDBContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("MySQLConnection"));
+            });
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             services.AddHttpClient();
             services.AddSingleton(option => new RedisCore(Configuration.GetConnectionString("RedisConnection"), Configuration.GetValue("RedisIndex", 1)));
             services.AddScoped<SearchService>();
             services.AddScoped<NovelService>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.LoginPath = "/login";
+               });
             services.AddControllersWithViews();
         }
 
@@ -52,8 +63,8 @@ namespace Spoondrift.Mvc
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

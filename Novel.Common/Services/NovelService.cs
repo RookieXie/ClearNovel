@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
 using Novel.Common.DB;
+using Novel.Common.DB.Model;
 using Novel.Common.Models;
 using Novel.Common.Utils;
 using System;
@@ -191,5 +192,6 @@ namespace Novel.Common.Services
             }
             return nearlyUpdateNovels;
         }
+
     }
 }

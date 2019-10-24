@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Novel.Common.DB.Model;
 using Novel.Common.Models;
 using Novel.Common.Services;
 
 namespace Spoondrift.Mvc.Controllers
 {
+    [Authorize]
     public class NovelController : Controller
     {
         private readonly ILogger<NovelController> _logger;
@@ -35,6 +38,10 @@ namespace Spoondrift.Mvc.Controllers
             ViewBag.NearlyUpdateNovels = nearlyUpdateNovels;
             ViewBag.SelectNum = order;
             return View();
+        }
+        public async Task<bool> AddBookShelf(BookShelf book)
+        {
+            return true;
         }
     }
 }

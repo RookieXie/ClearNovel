@@ -1,0 +1,58 @@
+﻿
+@{
+    Layout = null;
+    var returnUrl = ViewBag.ReturnUrl;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</head>
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <!-- Icon -->
+            <div class="fadeIn first">
+                <img src="~/icons/lock.svg" id="icon" alt="User Icon" />
+            </div>
+
+            <!-- Login Form -->
+            <div>
+                <input type="text" id="login" class="fadeIn second" name="userName" placeholder="login">
+                <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+                <input type="submit" class="fadeIn fourth" value="Log In" onclick="login()">
+            </div>
+
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <a class="underlineHover" href="javascript:void(0)">Forgot Password?</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var login = function () {
+        var userName = $("").val;
+        var password = $("").val;
+        $.post("/login/login",{userName:"admin",password:"123456"},function(res){
+            if (res) {
+                window.location.href = '@returnUrl';
+            } else {
+                alert("登录失败")
+            }
+        })
+    }
+</script>
