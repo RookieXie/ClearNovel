@@ -45,6 +45,7 @@ namespace Spoondrift.Mvc.Controllers
             {
                 new Claim(ClaimTypes.Name, "admin"),
                 new Claim("FullName", "admin"),
+                new Claim("UserId", "123456"),
                 new Claim(ClaimTypes.Role, "Administrator"),
             };
 

@@ -38,7 +38,7 @@
                     <p class="card-text">@item.NearlyChapter</p>
                     <p class="card-text">作者:@item.Author</p>
                     <p class="card-text">更新时间:@item.UpdateTime</p>
-                    <a href="#" class="btn btn-outline-primary">加入书架</a> <a href="#" class="btn btn-outline-success ml-3">阅  读</a>
+                    <a onclick="AddBookShelf('@item.Title','@item.Url')" class="btn btn-outline-primary">加入书架</a> <a href="#" class="btn btn-outline-success ml-3">阅  读</a>
                 </div>
             </div>
         }
@@ -48,8 +48,16 @@
     function TabClick(order) {
         window.location.href = "/Novel/index?order=" + order;
     }
-     function AddBookShelf(order) {
-        window.location.href = "/Novel/index?order=" + order;
+    function AddBookShelf(title, url) {
+        var order = { Title: title, NovelUrl: url };
+        $.post("/Novel/AddBookShelf", order, function (res) {
+            if (res) {
+               
+            } else {
+              
+            }
+        })
+
     }
 </script>
 

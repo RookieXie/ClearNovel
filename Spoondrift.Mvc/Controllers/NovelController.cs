@@ -41,6 +41,8 @@ namespace Spoondrift.Mvc.Controllers
         }
         public async Task<bool> AddBookShelf(BookShelf book)
         {
+            var userId=User.Claims.Where(a => a.Type == "UserId").Select(a => a.Value);
+            var a = book;
             return true;
         }
     }
