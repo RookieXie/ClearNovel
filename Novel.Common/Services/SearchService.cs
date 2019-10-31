@@ -166,9 +166,9 @@ namespace Novel.Common.Services
             chapterContent.NextUrl = next_url?.GetAttributeValue("href", "");
             return chapterContent;
         }
-        public async Task<List<Nomic>> Getcaomics(int pageIndex)
+        public async Task<List<Nomic>> GetNomics(int pageIndex)
         {
-            var url = $"http://weijiaoshou.cn/manhua/liebiao/hanguomanhua-{pageIndex}.html";
+            var url = $"https://www.jjhanman.com";
             var client = httpClientFactory.CreateClient();
             var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
             Random random = new Random();
@@ -188,24 +188,21 @@ namespace Novel.Common.Services
             List<Nomic> list = new List<Nomic>();
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
-            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='recommend']//a");
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//article");
             foreach (var htmlNode in htmlNodes)
             {
                 Nomic nomic = new Nomic();
-                nomic.Url = htmlNode.GetAttributeValue("href", "");
-                var imgNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl men-l']//img");
-                nomic.ImgUrl = "http://weijiaoshou.cn"+imgNode.GetAttributeValue("src", "");
-                var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl men-r']//div[position()=1]");
-                var descriptionNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl men-r']//div[position()=2]");
-                nomic.Title = titleNode.InnerText;
-                nomic.Description = descriptionNode.InnerText;
+                var urlNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//h2//a");
+                var urls = urlNode.GetAttributeValue("href", "").Split('/');
+                nomic.Url = urls[urls.Length-1].Split('.')[0];
+                nomic.Title = urlNode.InnerText;
                 list.Add(nomic);
             }
             return list;
         }
         public async Task<List<NomicCatalog>> GetcaomicCatalog(string url)
         {
-             url = $"http://weijiaoshou.cn{url}";
+             url = $"https://www.jjhanman.com/{url}.html";
             var client = httpClientFactory.CreateClient();
             var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
             Random random = new Random();
@@ -225,12 +222,12 @@ namespace Novel.Common.Services
             List<NomicCatalog> list = new List<NomicCatalog>();
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
-            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='list']//a");
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='article-paging']//a");
             foreach (var htmlNode in htmlNodes)
             {
                 NomicCatalog nomic = new NomicCatalog();
                 nomic.Url = htmlNode.GetAttributeValue("href", "");               
-                var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//div[@class='fl']");
+                var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//span");
                 nomic.Title = titleNode.InnerText;
                 list.Add(nomic);
             }

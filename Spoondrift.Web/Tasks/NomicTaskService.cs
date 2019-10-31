@@ -42,7 +42,7 @@ namespace Spoondrift.Web.Tasks
                 {
                     redis.SetCache(key, pageIndex + 1, TimeSpan.MaxValue);
                     msg += "开始";
-                    List<Nomic> nomics = await _searchService.Getcaomics(pageIndex);
+                    List<Nomic> nomics = await _searchService.GetNomics(pageIndex);
                     List<NomicDB> nomicDBs = _mapper.Map<List<Nomic>, List<NomicDB>>(nomics);
                     nomicDBs = nomicDBs.Where(a => !_novelDBContext.Nomic.Any(b => b.Title == a.Title)).ToList();
 

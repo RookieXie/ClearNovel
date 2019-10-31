@@ -54,7 +54,7 @@ namespace Novel.Controllers
         }
         public async Task<IActionResult> Privacy(int pageIndex=1)
         {
-            List<Nomic> nomics= await _searchService.Getcaomics(pageIndex);
+            List<Nomic> nomics= await _searchService.GetNomics(pageIndex);
             ViewBag.Nomics = nomics;
             ViewBag.PageIndex = pageIndex;
             return View();

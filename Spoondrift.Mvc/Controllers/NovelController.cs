@@ -11,7 +11,7 @@ using Novel.Common.Services;
 
 namespace Spoondrift.Mvc.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class NovelController : Controller
     {
         private readonly ILogger<NovelController> _logger;
