@@ -30,7 +30,7 @@ namespace Novel.Common.Services
         {
             var client = httpClientFactory.CreateClient();
             var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
-          
+
             Random random = new Random();
 
             var url = $"https://www.biquge5200.com/modules/article/search.php?searchkey={WebUtility.UrlDecode(novelName)}";
@@ -38,7 +38,7 @@ namespace Novel.Common.Services
             var response = await client.GetAsync(url);
             var str = await response.Content.ReadAsByteArrayAsync();
 
-           string  responseString = Encoding.GetEncoding("gbk").GetString(str);
+            string responseString = Encoding.GetEncoding("gbk").GetString(str);
 
             //return str;
             return HandleSearchHtml(responseString);
@@ -65,14 +65,14 @@ namespace Novel.Common.Services
                 {
                     SearchResultContent searchResultContent = new SearchResultContent()
                     {
-                        Title = tdDocs.Where(a => a.FirstChild.Name == "a" && a.GetClasses().FirstOrDefault() == "odd" ).FirstOrDefault()?.FirstChild.InnerHtml,
+                        Title = tdDocs.Where(a => a.FirstChild.Name == "a" && a.GetClasses().FirstOrDefault() == "odd").FirstOrDefault()?.FirstChild.InnerHtml,
                         NovelUrl = tdDocs.Where(a => a.FirstChild.Name == "a" && a.GetClasses().FirstOrDefault() == "odd").FirstOrDefault()?.FirstChild.GetAttributeValue("href", ""),
                         Newest = tdDocs.Where(a => a.FirstChild.Name == "a" && a.GetClasses().FirstOrDefault() == "even").FirstOrDefault()?.FirstChild.InnerHtml,
-                        NewestUrl= tdDocs.Where(a => a.FirstChild.Name == "a" && a.GetClasses().FirstOrDefault() == "even").FirstOrDefault()?.FirstChild.GetAttributeValue("href", ""),
+                        NewestUrl = tdDocs.Where(a => a.FirstChild.Name == "a" && a.GetClasses().FirstOrDefault() == "even").FirstOrDefault()?.FirstChild.GetAttributeValue("href", ""),
                         Author = tdDocs.Where(a => a.FirstChild.Name == "#text" && a.GetClasses().FirstOrDefault() == "odd").FirstOrDefault()?.FirstChild.InnerHtml,
                         WordSize = tdDocs.Where(a => a.FirstChild.Name == "#text" && a.GetClasses().FirstOrDefault() == "even").FirstOrDefault()?.FirstChild.InnerHtml,
                         UpdateTime = tdDocs.Where(a => a.FirstChild.Name == "#text" && a.GetClasses().FirstOrDefault() == "odd" && a.Attributes.Any(b => b.Name == "align")).FirstOrDefault()?.FirstChild.InnerHtml,
-                        Status = tdDocs.Where(a => a.FirstChild.Name == "#text" && a.GetClasses().FirstOrDefault() == "even" && a.Attributes.Any(b=>b.Name == "align")).FirstOrDefault()?.FirstChild.InnerHtml,
+                        Status = tdDocs.Where(a => a.FirstChild.Name == "#text" && a.GetClasses().FirstOrDefault() == "even" && a.Attributes.Any(b => b.Name == "align")).FirstOrDefault()?.FirstChild.InnerHtml,
                     };
                     searchResultContents.Add(searchResultContent);
                 }
@@ -114,7 +114,7 @@ namespace Novel.Common.Services
             }
             else
             {
-                catalodNodes = catalodNodes.Skip(catalodNodes.Count/2).ToList();
+                catalodNodes = catalodNodes.Skip(catalodNodes.Count / 2).ToList();
             }
             foreach (var catalodNode in catalodNodes)
             {
@@ -123,8 +123,8 @@ namespace Novel.Common.Services
                 var chapterUrl = chapterNode.GetAttributeValue("href", "");
                 catalogs.Add(new Catalog
                 {
-                    ChapterName= chapterName,
-                    ChapterUrl= chapterUrl
+                    ChapterName = chapterName,
+                    ChapterUrl = chapterUrl
                 });
             }
             return catalogs;
@@ -156,13 +156,13 @@ namespace Novel.Common.Services
             ChapterContent chapterContent = new ChapterContent();
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
-            var title= htmlDocument.DocumentNode.SelectSingleNode("//div[@class='bookname']//h1");
+            var title = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='bookname']//h1");
             var catalodNodes = htmlDocument.DocumentNode.SelectSingleNode("//div[@id='content']");
             var previous_url = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='bottem2']//a[position()=2]");
             var next_url = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='bottem2']//a[position()=4]");
             chapterContent.Title = title.InnerText;
             chapterContent.Content = catalodNodes.InnerText;
-            chapterContent.PreviousUrl = previous_url?.GetAttributeValue("href","");
+            chapterContent.PreviousUrl = previous_url?.GetAttributeValue("href", "");
             chapterContent.NextUrl = next_url?.GetAttributeValue("href", "");
             return chapterContent;
         }
@@ -176,7 +176,7 @@ namespace Novel.Common.Services
             var response = await client.GetAsync(url);
             var str = await response.Content.ReadAsStringAsync();
             return HandleNomic(str);
-             
+
         }
         /// <summary>
         /// 解析目录
@@ -194,22 +194,22 @@ namespace Novel.Common.Services
                 Nomic nomic = new Nomic();
                 var urlNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//h2//a");
                 var urls = urlNode.GetAttributeValue("href", "").Split('/');
-                nomic.Url = urls[urls.Length-1].Split('.')[0];
+                nomic.Url = urls[urls.Length - 1].Split('.')[0];
                 nomic.Title = urlNode.InnerText;
                 list.Add(nomic);
             }
             return list;
         }
-        public async Task<List<NomicCatalog>> GetcaomicCatalog(string url)
+        public async Task<List<NomicCatalog>> GetcaomicCatalog(string urlHtml)
         {
-             url = $"https://www.jjhanman.com/{url}.html";
+            var url = $"https://www.jjhanman.com/{urlHtml}.html";
             var client = httpClientFactory.CreateClient();
             var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
             Random random = new Random();
             client.DefaultRequestHeaders.Add("User-Agent", userAgent[random.Next(0, userAgent.Length - 1)]);
             var response = await client.GetAsync(url);
             var str = await response.Content.ReadAsStringAsync();
-            return HandleNomicCatalog(str);
+            return HandleNomicCatalog(str, urlHtml);
 
         }
         /// <summary>
@@ -217,7 +217,7 @@ namespace Novel.Common.Services
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
-        public List<NomicCatalog> HandleNomicCatalog(string html)
+        public List<NomicCatalog> HandleNomicCatalog(string html, string url)
         {
             List<NomicCatalog> list = new List<NomicCatalog>();
             HtmlDocument htmlDocument = new HtmlDocument();
@@ -226,23 +226,32 @@ namespace Novel.Common.Services
             foreach (var htmlNode in htmlNodes)
             {
                 NomicCatalog nomic = new NomicCatalog();
-                nomic.Url = htmlNode.GetAttributeValue("href", "");               
+                //nomic.Url = htmlNode.GetAttributeValue("href", "");  
+                //var urlNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//h2//a");
+                //var urls = urlNode.GetAttributeValue("href", "").Split('/');
+                nomic.Url = url;
                 var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//span");
-                nomic.Title = titleNode.InnerText;
+                nomic.Index = Convert.ToInt32(titleNode.InnerText);
+                nomic.Title = $"第{nomic.Index-1}话";
                 list.Add(nomic);
             }
             return list;
         }
-        public async Task<NomicContent> NomicContent(string url)
+        public async Task<NomicContent> NomicContent(string urlHtml, int index)
         {
-            url = $"http://weijiaoshou.cn{url}";
+            var url = $"https://www.jjhanman.com/{urlHtml}.html/{index}";
             var client = httpClientFactory.CreateClient();
             var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
             Random random = new Random();
             client.DefaultRequestHeaders.Add("User-Agent", userAgent[random.Next(0, userAgent.Length - 1)]);
             var response = await client.GetAsync(url);
             var str = await response.Content.ReadAsStringAsync();
-            return HandleNomicContent(str);
+
+            var nomicContent = HandleNomicContent(str);
+            nomicContent.PreviousPage = (index - 1).ToString();
+            nomicContent.NextPage = (index + 1).ToString();
+            nomicContent.CatalogUrl = urlHtml;
+            return nomicContent;
 
         }
         /// <summary>
@@ -256,20 +265,16 @@ namespace Novel.Common.Services
             List<string> list = new List<string>();
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
-            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='detail']//p");
-            foreach (var htmlNode in htmlNodes)
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//article[@class='article-content']//p");
+            nomicContent.Title = htmlNodes[0].InnerText;
+            var imgNodes = htmlNodes[1].SelectNodes($"{htmlNodes[1].XPath}//img");
+            foreach (var imgNode in imgNodes)
             {
-                var titleNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//img");
+                var img = imgNode.GetAttributeValue("src", "");
 
-                list.Add("http://weijiaoshou.cn" + titleNode.GetAttributeValue("src", ""));
+                list.Add(img);
             }
             nomicContent.ImgUrls = list;
-            var previousNodes = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='turn']//a[position()=1]");
-            var nextNodes = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='turn']//a[position()=2]");
-            var catalogNodes = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='turn']//a[position()=3]");
-            nomicContent.PreviousPage = previousNodes.GetAttributeValue("href", "");
-            nomicContent.NextPage = nextNodes.GetAttributeValue("href", "");
-            nomicContent.CatalogUrl = catalogNodes.GetAttributeValue("href", "");
             return nomicContent;
         }
     }

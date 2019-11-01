@@ -7,6 +7,7 @@ namespace Novel.Common.Models
     public class NomicContent
     {
         public List<string> ImgUrls { get; set; }
+        public string Title { get; set; }
         public string NextPage { get; set; }
         public string PreviousPage { get; set; }
         public string CatalogUrl { get; set; }

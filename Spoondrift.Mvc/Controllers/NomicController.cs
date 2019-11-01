@@ -27,7 +27,13 @@ namespace Spoondrift.Mvc.Controllers
         public async Task<IActionResult> Detail(string  id)
         {
             var list = await _searchService.GetcaomicCatalog(id);
-            ViewBag.Nomics = list;
+            ViewBag.Catalogs = list;
+            return View();
+        }
+        public async Task<IActionResult> NomicContent(string title, int index)
+        {
+            var nomicContent = await _searchService.NomicContent(title, index);
+            ViewBag.NomicContent = nomicContent;
             return View();
         }
     }

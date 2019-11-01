@@ -8,5 +8,6 @@ namespace Novel.Common.Models
     {
         public string Url { get; set; }
         public string Title { get; set; }
+        public int Index { get; set; }
     }
 }

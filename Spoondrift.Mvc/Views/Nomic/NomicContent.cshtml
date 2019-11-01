@@ -1,0 +1,41 @@
+﻿@using Novel.Common.Models
+@{
+    ViewData["Title"] = "Detail";
+     NomicContent nomicContent = ViewBag.NomicContent;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@nomicContent.Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in nomicContent.ImgUrls)
+        {
+            <tr>
+                <td><img class="card-img" src="@item" /></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <button onclick="previouspage('@nomicContent.CatalogUrl','@nomicContent.PreviousPage')">上章</button><button onclick="catalogPage('@nomicContent.CatalogUrl')">目录</button><button onclick="nextpage('@nomicContent.CatalogUrl','@nomicContent.NextPage')">下章</button>
+</div>
+
+<script>
+    function nextpage(title, index) {
+        if (index == 1 || index == "1") {
+            catalogPage(title)
+        } else {
+            window.location.href = "/Nomic/NomicContent?title=" + title + "&index=" + index;
+        }
+    }
+    function previouspage(title, index) {
+        window.location.href = "/Nomic/NomicContent?title=" + title + "&index=" + index;
+    }
+    function catalogPage(title) {
+        window.location.href = "/Nomic/Detail?id=" + title;
+    }
+</script>
