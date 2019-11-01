@@ -7,13 +7,13 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 COPY *.sln .
 COPY */*.csproj ./
-RUN dotnet restore  Spoondrift.Mvc/Spoondrift.Mvc.csproj
+RUN dotnet restore  Spoondrift.Mvc.csproj
 COPY . .
 WORKDIR /src/Spoondrift.Mvc 
-RUN dotnet build Spoondrift.Mvc/Spoondrift.Mvc.csproj -c Release -o /app/build
+RUN dotnet build Spoondrift.Mvc.csproj -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish Spoondrift.Mvc/Spoondrift.Mvc.csproj -c Release -o /app/publish
+RUN dotnet publish Spoondrift.Mvc.csproj -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
