@@ -11,9 +11,9 @@ namespace Spoondrift.Mvc.Controllers
     public class NomicController : Controller
     {
         private readonly ILogger<NomicController> _logger;
-        private readonly SearchService _searchService;
+        private readonly NomicService _searchService;
 
-        public NomicController(ILogger<NomicController> logger, SearchService searchService)
+        public NomicController(ILogger<NomicController> logger, NomicService searchService)
         {
             _logger = logger;
             _searchService = searchService;

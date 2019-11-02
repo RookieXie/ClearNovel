@@ -37,6 +37,8 @@ namespace Spoondrift.Mvc
             services.AddSingleton(option => new RedisCore(Configuration.GetConnectionString("RedisConnection"), Configuration.GetValue("RedisIndex", 1)));
             services.AddScoped<SearchService>();
             services.AddScoped<NovelService>();
+            services.AddScoped<NomicService>();
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(options =>
                {
