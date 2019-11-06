@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spoondrift.Web", "Spoondrif
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spoondrift.Mvc", "Spoondrift.Mvc\Spoondrift.Mvc.csproj", "{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spoondrift.React", "Spoondrift.React\Spoondrift.React.csproj", "{A4F4842A-44FC-4444-84BC-DC5CD4EF96E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spoondrift.Angular", "Spoondrift.Angular\Spoondrift.Angular.csproj", "{1BB5E324-F4CD-48EB-899A-56F6BC08C652}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4F4842A-44FC-4444-84BC-DC5CD4EF96E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4F4842A-44FC-4444-84BC-DC5CD4EF96E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4F4842A-44FC-4444-84BC-DC5CD4EF96E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4F4842A-44FC-4444-84BC-DC5CD4EF96E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BB5E324-F4CD-48EB-899A-56F6BC08C652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BB5E324-F4CD-48EB-899A-56F6BC08C652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BB5E324-F4CD-48EB-899A-56F6BC08C652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BB5E324-F4CD-48EB-899A-56F6BC08C652}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
