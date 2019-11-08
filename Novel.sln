@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spoondrift.Web", "Spoondrif
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spoondrift.Mvc", "Spoondrift.Mvc\Spoondrift.Mvc.csproj", "{C071DBCE-6ECF-4FD7-AD86-57965C6DC84B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spoondrift.Angular", "Spoondrift.Angular\Spoondrift.Angular.csproj", "{1BB5E324-F4CD-48EB-899A-56F6BC08C652}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spoondrift.Angular", "Spoondrift.Angular\Spoondrift.Angular.csproj", "{1BB5E324-F4CD-48EB-899A-56F6BC08C652}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spoondrift.Api", "Spoondrift.Api\Spoondrift.Api.csproj", "{3C5A088D-92DB-4371-A067-6374E49FDE25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{1BB5E324-F4CD-48EB-899A-56F6BC08C652}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BB5E324-F4CD-48EB-899A-56F6BC08C652}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BB5E324-F4CD-48EB-899A-56F6BC08C652}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5A088D-92DB-4371-A067-6374E49FDE25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5A088D-92DB-4371-A067-6374E49FDE25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5A088D-92DB-4371-A067-6374E49FDE25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5A088D-92DB-4371-A067-6374E49FDE25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

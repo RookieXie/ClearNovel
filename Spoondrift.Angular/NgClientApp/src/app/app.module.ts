@@ -6,17 +6,29 @@ import { AppComponent } from './app.component';
 import { HerosComponent } from './heros/heros.component';
 import { FormsModule } from '@angular/forms';
 import { MyEditorComponent } from './my-editor/my-editor.component'; // <-- NgModel lives here
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+import { MessagesComponent } from './messages/messages.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HerosComponent,
-    MyEditorComponent
+    MyEditorComponent,
+    HeroDetailComponent,
+    MessagesComponent,
+    NavMenuComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    CKEditorModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
