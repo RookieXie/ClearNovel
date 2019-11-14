@@ -12,6 +12,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LoginComponent } from './login/login.component';
+import { AuthFilter} from './auth-filter/auth-filter';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { LoginComponent } from './login/login.component';
     CKEditorModule,
     NgbModule
   ],
-  providers: [],
+  providers: [AuthFilter],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
