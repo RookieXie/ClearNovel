@@ -18,10 +18,11 @@ namespace Spoondrift.Mvc.Controllers
             _logger = logger;
             _searchService = searchService;
         }
+        [ResponseCache(Duration = 60)]
         public async Task<IActionResult> Index(string title = "最新上传", int pageIndex = 1)
         {
             var banners = await _searchService.GetBanners();
-            var nomics = await _searchService.GetNomics(title,pageIndex);
+            var nomics = await _searchService.GetNomics(title, pageIndex);
             if (nomics != null)
             {
                 nomics.ForEach(a =>
@@ -35,18 +36,20 @@ namespace Spoondrift.Mvc.Controllers
             ViewBag.pageIndex = pageIndex;
             return View();
         }
-        public async Task<IActionResult> Detail(string titleType,int pageIndex,string title)
+        [ResponseCache(Duration = 60)]
+        public async Task<IActionResult> Detail(string titleType, int pageIndex, string title)
         {
             var key = $"{titleType}_list_{pageIndex}";
-            var list = await _searchService.GetcaomicCatalog(key,title);
+            var list = await _searchService.GetcaomicCatalog(key, title);
             if (list != null)
             {
-                list.ForEach(a => { a.Url = "";a.Title = a.Title.Trim(); });
+                list.ForEach(a => { a.Url = ""; a.Title = a.Title.Trim(); });
             }
             ViewBag.Catalogs = list;
             ViewBag.NomicTitle = title;
             return View();
         }
+        [ResponseCache(Duration = 60)]
         public async Task<IActionResult> NomicContent(string title, string catalog)
         {
             var nomicContent = await _searchService.NomicContent(title, catalog);

@@ -1,10 +1,12 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Novel.Common.DB;
 using Novel.Common.Models;
 using Novel.Common.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -18,11 +20,13 @@ namespace Novel.Common.Services
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IConfiguration configuration;
         private readonly RedisCore _redisCore;
-        public WjsNomicService(IHttpClientFactory httpClientFactory, IConfiguration configuration, RedisCore redisCore)
+        private readonly IWebHostEnvironment env;
+        public WjsNomicService(IHttpClientFactory httpClientFactory, IConfiguration configuration, RedisCore redisCore, IWebHostEnvironment webHostEnvironment)
         {
             this.httpClientFactory = httpClientFactory;
             this.configuration = configuration;
             _redisCore = redisCore;
+            env = webHostEnvironment;
         }
         public async Task<List<Banner>> GetBanners()
         {
@@ -298,7 +302,8 @@ namespace Novel.Common.Services
             NomicContent nomicContent = new NomicContent();
             if (nomicCatalogs != null)
             {
-                nomicCatalogs.ForEach(a => {
+                nomicCatalogs.ForEach(a =>
+                {
                     a.Title = a.Title.Trim();
                 });
                 var nomicCatalog = nomicCatalogs.Where(a => a.Title == catalog).FirstOrDefault();
@@ -316,15 +321,25 @@ namespace Novel.Common.Services
                         var response = await client.GetAsync(nomicCatalog.Url);
                         var str = await response.Content.ReadAsStringAsync();
                         nomicContent.Title = nomicCatalog.Title;
-                        nomicContent.ImgUrls = HandleNomicContent(str);
+                        nomicContent.ImgUrls = await HandleNomicContent(str);
                         nomicContent.PreviousPage = nomicCatalogs.Where(a => a.Index == (nomicCatalog.Index - 1)).Select(b => b.Title).FirstOrDefault();
                         nomicContent.NextPage = nomicCatalogs.Where(a => a.Index == (nomicCatalog.Index + 1)).Select(b => b.Title).FirstOrDefault(); ;
                         nomicContent.CatalogUrl = title;
-                        redis.SetCache(key, nomicContent,TimeSpan.MaxValue);
+                        redis.SetCache(key, nomicContent, TimeSpan.MaxValue);
                     }
-
+                    Task task = new Task(() => {
+                        if (nomicContent.ImgUrls.Exists(a => a.Contains("http")))
+                        {
+                            nomicContent.ImgUrls.ForEach(async a => {
+                                a = await DownLoad(a);
+                            });
+                            redis.SetCache(key, nomicContent, TimeSpan.MaxValue);
+                        }
+                    });
+                    task.Start();
                 }
             }
+            
             return nomicContent;
 
         }
@@ -333,20 +348,42 @@ namespace Novel.Common.Services
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
-        public List<string> HandleNomicContent(string html)
+        public async Task<List<string>> HandleNomicContent(string html)
         {
             List<string> list = new List<string>();
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
-            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='detail']//p");
-            var imgNodes = htmlNodes[1].SelectNodes($"{htmlNodes[1].XPath}//img");
-            foreach (var imgNode in imgNodes)
+            var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='detail']//p");           
+            foreach (var htmlNode in htmlNodes)
             {
+                var imgNode = htmlNode.SelectSingleNode($"{htmlNodes[1].XPath}//img");
                 var img = $"http://www.weijiaoshou.cn{imgNode.GetAttributeValue("src", "")}";
-
+               
                 list.Add(img);
             }
             return list;
+        }
+        public async Task<string> DownLoad(string imgUrl)
+        {
+            var uploadPath = "/Image/nomic/";
+            var filePath = env.WebRootPath + uploadPath;
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
+            var imgName = Guid.NewGuid().ToString() + ".jpg";
+            var webUrl = uploadPath + imgName;
+            var headFile = filePath + imgName;
+            //获取远程图片到本地
+            if (!File.Exists(headFile))
+            {
+                var client = httpClientFactory.CreateClient();
+                var userAgent = configuration.GetSection("User_Agents").Get<string[]>();
+                var headBytes = await client.GetByteArrayAsync(imgUrl);
+                File.WriteAllBytes(headFile, headBytes);
+
+            }
+            return webUrl;
         }
     }
 }
