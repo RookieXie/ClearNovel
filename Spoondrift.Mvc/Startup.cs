@@ -38,7 +38,8 @@ namespace Spoondrift.Mvc
             services.AddScoped<SearchService>();
             services.AddScoped<NovelService>();
             services.AddScoped<NomicService>();
-            
+            services.AddScoped<WjsNomicService>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(options =>
                {

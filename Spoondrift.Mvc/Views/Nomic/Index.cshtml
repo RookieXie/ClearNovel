@@ -2,23 +2,63 @@
 @{
     ViewData["Title"] = "Index";
     List<Nomic> nomics = ViewBag.Nomics;
+    List<Banner> tabs = ViewBag.Banners;
+    string selectBanner = ViewBag.SelectBanner;
+    int pageIndex = ViewBag.pageIndex;
 }
-
+<style>
+    .list-group-item-active {
+        position: relative;
+        display: block;
+        padding: .75rem 1.25rem;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid rgba(0,0,0,.125);
+        z-index: 2;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+</style>
+<ul class="list-group list-group-horizontal-lg">
+    @foreach (var tab in tabs)
+    {
+        <li style="cursor:pointer" class=@(selectBanner == tab.Title?"list-group-item-active":"list-group-item") onclick="TabClick('@tab.Title')">@tab.Title</li>
+    }
+</ul>
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
         @foreach (var item in nomics)
         {
             <div class="card   mb-3 border border-info rounded">
                 <div class="card-body">
+                    @*<img class="card-img-top" src="@item.ImgUrl" style="width:30%" />*@
                     <h5 class="card-title">@item.Title</h5>
-                    <a onclick="Detail('@item.Url')" class="btn btn-outline-primary">阅  读</a>
+                    <span class="card-deck">@item.Description</span>
+                    <a onclick="Detail('@selectBanner',@pageIndex,'@item.Title')" class="btn btn-outline-primary">阅  读</a>
                 </div>
             </div>
         }
     </div>
 </div>
+<div>
+    <button onclick="prePage('@selectBanner',@pageIndex)">上一页</button><button onclick="nextPage('@selectBanner',@pageIndex)">下一页</button>
+</div>
 <script>
-    function Detail(order) {
-        window.location.href = "/Nomic/Detail?id=" + order;
-    }    
+    function Detail(titleType, pageIndex, title) {
+        window.location.href = "/Nomic/Detail?titleType=" + titleType + "&pageIndex=" + pageIndex + "&title=" + title;
+    }
+    function TabClick(title) {
+        window.location.href = "/Nomic/index?title=" + title + "&pageIndex=" + 1;
+    }
+    function prePage(title, pageIndex) {
+        if (pageIndex - 1 > 0) {
+            window.location.href = "/Nomic/index?title=" + title + "&pageIndex=" + (pageIndex - 1);
+        }
+    }
+    function nextPage(title, pageIndex) {
+
+        window.location.href = "/Nomic/index?title=" + title + "&pageIndex=" + (pageIndex + 1);
+
+    }
 </script>

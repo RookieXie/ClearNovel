@@ -25,17 +25,13 @@
 </div>
 
 <script>
-    function nextpage(title, index) {
-        if (index == 1 || index == "1") {
-            catalogPage(title)
-        } else {
-            window.location.href = "/Nomic/NomicContent?title=" + title + "&index=" + index;
-        }
+    function nextpage(title, catalog) {
+         window.location.href = "/Nomic/NomicContent?title=" + title + "&catalog=" + catalog;
     }
-    function previouspage(title, index) {
-        window.location.href = "/Nomic/NomicContent?title=" + title + "&index=" + index;
+    function previouspage(title, catalog) {
+        window.location.href = "/Nomic/NomicContent?title=" + title + "&catalog=" + catalog;
     }
     function catalogPage(title) {
-        window.location.href = "/Nomic/Detail?id=" + title;
+        window.location.href = "/Nomic/Detail?title=" + title;
     }
 </script>

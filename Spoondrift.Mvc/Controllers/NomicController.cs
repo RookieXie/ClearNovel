@@ -11,28 +11,45 @@ namespace Spoondrift.Mvc.Controllers
     public class NomicController : Controller
     {
         private readonly ILogger<NomicController> _logger;
-        private readonly NomicService _searchService;
+        private readonly WjsNomicService _searchService;
 
-        public NomicController(ILogger<NomicController> logger, NomicService searchService)
+        public NomicController(ILogger<NomicController> logger, WjsNomicService searchService)
         {
             _logger = logger;
             _searchService = searchService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string title = "最新上传", int pageIndex = 1)
         {
-            var list=await _searchService.GetNomics(1);
-            ViewBag.Nomics = list;
+            var banners = await _searchService.GetBanners();
+            var nomics = await _searchService.GetNomics(title,pageIndex);
+            if (nomics != null)
+            {
+                nomics.ForEach(a =>
+                {
+                    a.Url = "";
+                });
+            }
+            ViewBag.Nomics = nomics;
+            ViewBag.Banners = banners;
+            ViewBag.SelectBanner = title;
+            ViewBag.pageIndex = pageIndex;
             return View();
         }
-        public async Task<IActionResult> Detail(string  id)
+        public async Task<IActionResult> Detail(string titleType,int pageIndex,string title)
         {
-            var list = await _searchService.GetcaomicCatalog(id);
+            var key = $"{titleType}_list_{pageIndex}";
+            var list = await _searchService.GetcaomicCatalog(key,title);
+            if (list != null)
+            {
+                list.ForEach(a => { a.Url = "";a.Title = a.Title.Trim(); });
+            }
             ViewBag.Catalogs = list;
+            ViewBag.NomicTitle = title;
             return View();
         }
-        public async Task<IActionResult> NomicContent(string title, int index)
+        public async Task<IActionResult> NomicContent(string title, string catalog)
         {
-            var nomicContent = await _searchService.NomicContent(title, index);
+            var nomicContent = await _searchService.NomicContent(title, catalog);
             ViewBag.NomicContent = nomicContent;
             return View();
         }

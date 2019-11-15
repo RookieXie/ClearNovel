@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ using Spoondrift.Mvc.Models;
 
 namespace Spoondrift.Mvc.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -22,6 +23,7 @@ namespace Spoondrift.Mvc.Controllers
 
         public IActionResult Index()
         {
+           var a= WebUtility.HtmlDecode("&#x7B2C;28&#x8BDD;");
             return View();
         }
 
