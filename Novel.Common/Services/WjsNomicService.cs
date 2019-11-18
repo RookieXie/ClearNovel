@@ -328,7 +328,7 @@ namespace Novel.Common.Services
                         redis.SetCache(key, nomicContent, TimeSpan.MaxValue);
                     }
                     Task task = new Task(() => {
-                        if (nomicContent.ImgUrls.Contains("http"))
+                        if (nomicContent.ImgUrls.Any(a=>a.Contains("http")))
                         {
                             nomicContent.ImgUrls.ForEach(async a => {
                                 a = await DownLoad(a);
