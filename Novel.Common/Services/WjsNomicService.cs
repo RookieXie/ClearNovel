@@ -328,7 +328,7 @@ namespace Novel.Common.Services
                         redis.SetCache(key, nomicContent, TimeSpan.MaxValue);
                     }
                     Task task = new Task(() => {
-                        if (nomicContent.ImgUrls.Exists(a => a.Contains("http")))
+                        if (nomicContent.ImgUrls.Contains("http"))
                         {
                             nomicContent.ImgUrls.ForEach(async a => {
                                 a = await DownLoad(a);
@@ -356,7 +356,7 @@ namespace Novel.Common.Services
             var htmlNodes = htmlDocument.DocumentNode.SelectNodes("//div[@class='detail']//p");           
             foreach (var htmlNode in htmlNodes)
             {
-                var imgNode = htmlNode.SelectSingleNode($"{htmlNodes[1].XPath}//img");
+                var imgNode = htmlNode.SelectSingleNode($"{htmlNode.XPath}//img");
                 var img = $"http://www.weijiaoshou.cn{imgNode.GetAttributeValue("src", "")}";
                
                 list.Add(img);
