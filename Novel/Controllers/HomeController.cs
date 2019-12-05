@@ -54,21 +54,21 @@ namespace Novel.Controllers
         }
         public async Task<IActionResult> Privacy(int pageIndex=1)
         {
-            List<Nomic> nomics= await _searchService.GetNomics(pageIndex);
-            ViewBag.Nomics = nomics;
+            //List<Nomic> nomics= await _searchService.GetNomics(pageIndex);
+           // ViewBag.Nomics = nomics;
             ViewBag.PageIndex = pageIndex;
             return View();
         }
         public async Task<IActionResult> NomicCatalog(string url)
         {
-            List<NomicCatalog> nomicCatalogs = await _searchService.GetcaomicCatalog(url);
-            ViewBag.NomicCatalogs = nomicCatalogs;
+           // List<NomicCatalog> nomicCatalogs = await _searchService.GetcaomicCatalog(url);
+            //ViewBag.NomicCatalogs = nomicCatalogs;
             return View();
         }
         public async Task<IActionResult> NomicContent(string url)
         {
-            NomicContent nomicContent = await _searchService.NomicContent(url);
-            ViewBag.NomicContent = nomicContent;
+           // NomicContent nomicContent = await _searchService.NomicContent(url);
+            //ViewBag.NomicContent = nomicContent;
             return View();
         }
         public IActionResult BookShelf()
